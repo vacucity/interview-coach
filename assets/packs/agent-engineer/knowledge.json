@@ -1,0 +1,376 @@
+[
+ {
+  "id": "basics",
+  "title": "Agent 基础与经典范式",
+  "en": "Agent fundamentals and paradigms",
+  "summary": "Agent = LLM + 工具 + 状态/记忆 + 循环决策。先分清 workflow 和 agent，再掌握 ReAct、Plan-and-Solve、Reflection 三种范式。",
+  "sections": [
+   {
+    "h": "定义与组成",
+    "md": "\n- **Agent**：LLM 在循环里根据观察决定下一步动作的系统。组成：**模型**（推理决策）、**工具**（行动与取数）、**记忆/状态**、**控制循环**（下一步、何时停）、**护栏与评测**。\n- **和单次调用的区别**：会根据工具结果调整行为、有状态、有终止条件、有副作用 → 工程重点在运行时（Harness）：工具契约、上下文、重试、持久化、权限、观测。\n- **任务环境（PEAS）**：性能指标、环境、执行器、传感器——描述一个 Agent 要先说清它在什么环境里、靠什么感知和行动。\n",
+    "h_en": "Definition and components",
+    "md_en": "\n- **Agent**: a system in which an LLM decides its next action in a loop, based on what it observes. Components: the **model** (reasoning and decisions), **tools** (actions and data access), **memory/state**, the **control loop** (what to do next, when to stop), and **guardrails and evaluation**.\n- **How it differs from a single call**: it adapts to tool results, keeps state, has a stop condition and causes side effects → the engineering focus is the runtime (the harness): tool contracts, context, retries, persistence, permissions, observability.\n- **Task environment (PEAS)**: performance measure, environment, actuators, sensors. To describe an agent, first say what environment it works in and how it perceives and acts.\n"
+   },
+   {
+    "h": "Workflow 还是 Agent（Anthropic 分类）",
+    "md": "\n| 模式 | 控制流 | 例子 |\n|---|---|---|\n| 提示链 Prompt chaining | 代码 | 经营报告 Agent 的五个角色依次执行、文献综述 Agent 的 8 个节点 |\n| 路由 Routing | 代码或 LLM | 按报告类型选提示词 |\n| 并行 Parallelization | 代码 | 逐篇读论文、三个分析分支 |\n| 中心调度 Orchestrator-workers | LLM | 规划子问题再并行派发 |\n| 评估-优化 Evaluator-optimizer | 代码 + LLM | Writer ↔ 检查器循环 |\n| 自主 Agent | LLM | 模型自己决定调什么工具、何时停 |\n\n**原则**：步骤已知 → workflow（可控、可测、便宜）；步骤事先不可知 → agent。\n",
+    "h_en": "Workflow or agent (Anthropic's taxonomy)",
+    "md_en": "\n| Pattern | Control flow | Example |\n|---|---|---|\n| Prompt chaining | Code | A report-writing agent's five roles run in sequence; a literature-review agent's 8 nodes |\n| Routing | Code or LLM | Pick the prompt by report type |\n| Parallelization | Code | Read each paper in its own branch; three analysis branches |\n| Orchestrator-workers | LLM | Plan sub-questions, then dispatch them in parallel |\n| Evaluator-optimizer | Code + LLM | Writer ↔ checker loop |\n| Autonomous agent | LLM | The model decides which tools to call and when to stop |\n\n**Rule**: steps known in advance → workflow (controllable, testable, cheap); steps not knowable in advance → agent.\n"
+   },
+   {
+    "h": "三种经典范式（手写实现要点）",
+    "md": "\n- **ReAct**：Thought → Action → Observation 循环。代码里：推理 = assistant 文本，动作 = `tool_calls`，观察 = 带 `tool_call_id` 的 tool 消息；循环、最大步数、错误包装由代码负责。\n- **Plan-and-Solve**：先出整体计划再逐步执行。可并行、成本低、可审计；遇到意外要重新规划。\n- **Reflection**：生成 → 评审 → 改写。前提：评审有依据（参考/证据/测试）、反馈能改变流程、轮数有上限并保留最好版本。\n- **终止条件**：模型给出最终答案 / 调\"完成\"工具；硬护栏写在代码里：最大步数（`recursion_limit`）、预算、重复调用检测、无进展检测。\n",
+    "h_en": "Three classic paradigms (building them by hand)",
+    "md_en": "\n- **ReAct**: a Thought → Action → Observation loop. In code: reasoning = assistant text, action = `tool_calls`, observation = a tool message carrying `tool_call_id`; the loop, the step limit and error wrapping belong to code.\n- **Plan-and-Solve**: produce a whole plan first, then execute it step by step. Parallelizable, cheap and auditable; replan when something unexpected happens.\n- **Reflection**: generate → critique → rewrite. Preconditions: the critique has grounds (a reference, evidence or tests), the feedback can change the flow, and rounds are capped with the best version kept.\n- **Stop conditions**: the model gives a final answer or calls a \"finish\" tool; hard guardrails live in code: max steps (`recursion_limit`), budget, repeated-call detection, no-progress detection.\n"
+   },
+   {
+    "h": "Harness：哪些事不能交给模型",
+    "md": "\n权限判断、金额等硬校验、幂等去重、预算与步数上限、敏感操作审批、数据计算。**同一个模型换个 harness 表现差很多**。参考实测（UCVC-AI-Lab-Agent 教程）：只把工具描述写短，工具调用准确率 1.00 → 0.92。\n",
+    "h_en": "Harness: what you can't leave to the model",
+    "md_en": "\nPermission checks, hard checks such as amounts, idempotency and de-duplication, budget and step limits, approval of sensitive actions, data computation. **The same model behaves very differently under a different harness**. Reference measurement (UCVC-AI-Lab-Agent tutorial): just shortening the tool descriptions dropped tool-call accuracy from 1.00 to 0.92.\n"
+   }
+  ],
+  "summary_en": "Agent = LLM + tools + state/memory + a decision loop. First tell workflows from agents, then master the three classic paradigms: ReAct, Plan-and-Solve and Reflection.",
+  "match": {
+   "sec": [
+    "A."
+   ]
+  }
+ },
+ {
+  "id": "frameworks",
+  "title": "框架对比与选型",
+  "en": "Agent frameworks",
+  "summary": "用五个框架做同类任务来对比：AutoGen、AgentScope、CAMEL、LangChain、LangGraph。选型看流程复杂度，而不是流行度。",
+  "sections": [
+   {
+    "h": "五个框架一句话",
+    "md": "\n| 框架 | 核心机制 | 适合 | 局限 |\n|---|---|---|---|\n| AutoGen | 多 Agent 对话；GroupChat → Team | 角色对话、软件团队模拟 | 对话驱动，流程难精确控制 |\n| AgentScope | 消息驱动、分布式、容错 | 多 Agent 游戏、仿真 | 生态较小 |\n| CAMEL | 角色扮演 + inception prompting | 两个 Agent 自主协作写内容 | 偏研究，生产控制弱 |\n| LangChain | 模型/工具/检索的统一组件，1.x 有 `create_agent` + 中间件 | 单 Agent + 工具、RAG | 复杂流程要靠 LangGraph |\n| LangGraph | 有状态图：State、节点、边、checkpoint、interrupt | 需要循环、并行、持久化、人工审批的流程 | 学习成本，简单流程显得重 |\n",
+    "h_en": "Each framework in one line",
+    "md_en": "\n| Framework | Core mechanism | Good for | Limits |\n|---|---|---|---|\n| AutoGen | Multi-agent conversation; GroupChat → Team | Role conversations, simulating a software team | Conversation-driven, hard to control the flow precisely |\n| AgentScope | Message-driven, distributed, fault-tolerant | Multi-agent games, simulation | Smaller ecosystem |\n| CAMEL | Role-playing + inception prompting | Two agents writing content together autonomously | Research-leaning, weak production control |\n| LangChain | Unified components for models, tools and retrieval; 1.x adds `create_agent` + middleware | A single agent + tools, RAG | Complex flows need LangGraph |\n| LangGraph | Stateful graphs: State, nodes, edges, checkpoints, interrupt | Flows that need loops, parallelism, persistence, human approval | Learning curve; heavy for simple flows |\n"
+   },
+   {
+    "h": "选型原则",
+    "md": "\n- 框架只负责**编排**；契约、校验、评测、权限要自己掌握。\n- 一个 Agent + 若干工具的对话型任务 → `create_agent`；步骤固定、要并行/循环/审批 → 自己画 StateGraph；5 步线性流程 → 纯 Python 也行（比如一个按固定五步出报告的经营报告 Agent）。\n- 评价最终系统用业务指标：pass^k、质量、P95 延迟、单任务成本、可恢复率、人工介入率。\n",
+    "h_en": "How to choose",
+    "md_en": "\n- A framework only handles **orchestration**; contracts, validation, evaluation and permissions stay yours.\n- A conversational task with one agent and a few tools → `create_agent`; fixed steps that need parallelism, loops or approval → draw your own StateGraph; a 5-step linear flow → plain Python is fine (e.g. a report-writing agent that runs five fixed steps).\n- Judge the final system on business metrics: pass^k, quality, P95 latency, cost per task, recovery rate, human-intervention rate.\n"
+   }
+  ],
+  "summary_en": "Compares five frameworks on the same kind of task: AutoGen, AgentScope, CAMEL, LangChain and LangGraph. Choose by how complex the flow is, not by popularity.",
+  "match": {
+   "sec": [
+    "K."
+   ]
+  }
+ },
+ {
+  "id": "langchain",
+  "title": "LangChain 核心语法",
+  "en": "LangChain essentials",
+  "summary": "Chat model、消息、Runnable（invoke/batch/stream）、结构化输出、工具、回调、create_agent 与中间件。",
+  "sections": [
+   {
+    "h": "核心抽象",
+    "md": "\n```python\nfrom langchain_openai import ChatOpenAI\nllm = ChatOpenAI(model=\"deepseek-flash\", base_url=BASE_URL, api_key=KEY, temperature=0,\n                 timeout=60, max_retries=2, extra_body={\"thinking\": {\"type\": \"disabled\"}})\nmsg = llm.invoke([(\"system\", \"You are ...\"), (\"user\", \"...\")])      # AIMessage, read .content\nouts = llm.batch(prompts, config={\"max_concurrency\": 8})              # parallel calls\n```\n- **超时和重试一定要设**：没有 timeout 的一次卡住请求会让整个运行挂起（UCVC-AI-Lab-Agent 教程的参考实测里出现过）。\n- **DeepSeek thinking 与 max_tokens 共享预算**：开着 thinking 时结构化输出常被截断（finish_reason=length）。\n",
+    "h_en": "Core abstractions",
+    "md_en": "\n```python\nfrom langchain_openai import ChatOpenAI\nllm = ChatOpenAI(model=\"deepseek-flash\", base_url=BASE_URL, api_key=KEY, temperature=0,\n                 timeout=60, max_retries=2, extra_body={\"thinking\": {\"type\": \"disabled\"}})\nmsg = llm.invoke([(\"system\", \"You are ...\"), (\"user\", \"...\")])      # AIMessage, read .content\nouts = llm.batch(prompts, config={\"max_concurrency\": 8})              # parallel calls\n```\n- **Always set a timeout and retries**: one hung request without a timeout stalls the whole run (this happened in the UCVC-AI-Lab-Agent tutorial's reference runs).\n- **DeepSeek thinking shares the max_tokens budget**: with thinking on, structured output is often cut off (finish_reason=length).\n"
+   },
+   {
+    "h": "结构化输出",
+    "md": "\n```python\nclass Review(BaseModel):\n    model_config = ConfigDict(populate_by_name=True)\n    passed: bool = Field(alias=\"pass\")          # \"pass\" is a Python keyword\n    issues: list[Issue] = []\n\nr = llm.with_structured_output(Review, method=\"json_mode\").invoke(msgs)\na = llm.with_structured_output(Analysis, method=\"function_calling\").invoke(msgs)\n```\n| method | 机制 | 坑 |\n|---|---|---|\n| function_calling | schema 当作工具 | 模型不调用工具时返回 **None**，要检查或用 `include_raw=True` |\n| json_mode | 输出 JSON 对象 | 提示词必须含 \"JSON\" 并自己描述字段 |\n| json_schema | 服务端严格约束 | 新版默认值；兼容接口不一定支持，显式指定 method |\n",
+    "h_en": "Structured output",
+    "md_en": "\n```python\nclass Review(BaseModel):\n    model_config = ConfigDict(populate_by_name=True)\n    passed: bool = Field(alias=\"pass\")          # \"pass\" is a Python keyword\n    issues: list[Issue] = []\n\nr = llm.with_structured_output(Review, method=\"json_mode\").invoke(msgs)\na = llm.with_structured_output(Analysis, method=\"function_calling\").invoke(msgs)\n```\n| method | Mechanism | Pitfall |\n|---|---|---|\n| function_calling | The schema is presented as a tool | Returns **None** when the model doesn't call the tool; check for it or use `include_raw=True` |\n| json_mode | Outputs a JSON object | The prompt must contain \"JSON\" and describe the fields itself |\n| json_schema | Strict server-side constraint | The default in new versions; compatible APIs may not support it, so set method explicitly |\n"
+   },
+   {
+    "h": "工具与 create_agent",
+    "md": "\n```python\n@tool\ndef convert(amount: Annotated[float, Field(description=\"Amount in the base currency\")],\n            base: Currency, target: Currency) -> str:\n    '''Convert an amount of money from one currency to another.'''\n\nagent = create_agent(model=llm, tools=[search_docs], system_prompt=SYSTEM,\n                     middleware=[memory_prompt, search_first], checkpointer=saver)\n```\n- **工具描述就是 prompt**：参数要有类型、格式、示例（\"ISO 4217 code\"、\"city in English\"）。\n- 中间件：`@dynamic_prompt` 注入记忆；`wrap_model_call` 强制 `tool_choice` 或截断历史；`SummarizationMiddleware`、`ContextEditingMiddleware(ClearToolUsesEdit)` 压缩上下文。\n- 回调 `BaseCallbackHandler.on_llm_end` + `usage_metadata` 统计调用次数和 token（并行时加锁）。\n",
+    "h_en": "Tools and create_agent",
+    "md_en": "\n```python\n@tool\ndef convert(amount: Annotated[float, Field(description=\"Amount in the base currency\")],\n            base: Currency, target: Currency) -> str:\n    '''Convert an amount of money from one currency to another.'''\n\nagent = create_agent(model=llm, tools=[search_docs], system_prompt=SYSTEM,\n                     middleware=[memory_prompt, search_first], checkpointer=saver)\n```\n- **The tool description is a prompt**: parameters need types, formats and examples (\"ISO 4217 code\", \"city in English\").\n- Middleware: `@dynamic_prompt` injects memory; `wrap_model_call` forces `tool_choice` or trims history; `SummarizationMiddleware` and `ContextEditingMiddleware(ClearToolUsesEdit)` compress the context.\n- Callbacks: `BaseCallbackHandler.on_llm_end` + `usage_metadata` count calls and tokens (take a lock when running in parallel).\n"
+   }
+  ],
+  "summary_en": "Chat models, messages, Runnables (invoke/batch/stream), structured output, tools, callbacks, create_agent and middleware.",
+  "match": {
+   "sec": [
+    "K+."
+   ],
+   "tag": [
+    "LangChain"
+   ]
+  }
+ },
+ {
+  "id": "langgraph",
+  "title": "LangGraph 核心语法",
+  "en": "LangGraph essentials",
+  "summary": "State + Reducer、节点局部更新、普通/条件/汇合边、Send 动态并行、子图 output_schema、checkpointer、interrupt、Command、stream。",
+  "sections": [
+   {
+    "h": "执行模型：superstep",
+    "md": "\n每一步运行所有被触发的节点（并行）→ 按 reducer 合并它们返回的**局部更新** → 按边决定下一步。字段默认\"最后写入为准\"；`Annotated[T, reducer]` 声明合并方式。同一步多个节点写同一个无 reducer 字段 → `InvalidUpdateError`。\n",
+    "h_en": "Execution model: supersteps",
+    "md_en": "\nEach step runs every triggered node (in parallel) → merges the **partial updates** they return through the reducers → follows the edges to decide the next step. Without a reducer, a write in a later step overwrites the field (\"last write wins\"); `Annotated[T, reducer]` declares how writes merge. Several nodes in the same step writing one field that has no reducer → `InvalidUpdateError`.\n"
+   },
+   {
+    "h": "语法速查",
+    "md": "\n```python\nclass S(TypedDict, total=False):\n    memories: Annotated[list, operator.add]       # parallel writers append\n    notes: Annotated[dict, merge]\n\ng = StateGraph(S)\ng.add_node(\"cluster\", cluster)                    # returns {\"notes\": {...}} only\ng.add_edge(START, \"cluster\")\ng.add_conditional_edges(\"check\", route, [\"revise\", \"deliver\"])\ng.add_edge([\"gaps\", \"evolution\", \"conflicts\"], \"analysis_ready\")    # join: wait for all\ng.add_conditional_edges(START, lambda s: [Send(\"read_paper\", {\"paper\": p}) for p in s[\"papers\"]], [\"read_paper\"])\nsub = StateGraph(SectionState, output_schema=SectionOut).compile()  # subgraph as a node\napp = g.compile(checkpointer=SqliteSaver(conn))\napp.invoke(inputs, {\"configurable\": {\"thread_id\": \"w1\"}, \"max_concurrency\": 8})\napp.get_state(cfg).next; app.invoke(None, cfg)                       # resume\ninterrupt(payload); app.invoke(Command(resume=decision), cfg)        # human approval\n```\n",
+    "h_en": "Syntax cheat sheet",
+    "md_en": "\n```python\nclass S(TypedDict, total=False):\n    memories: Annotated[list, operator.add]       # parallel writers append\n    notes: Annotated[dict, merge]\n\ng = StateGraph(S)\ng.add_node(\"cluster\", cluster)                    # returns {\"notes\": {...}} only\ng.add_edge(START, \"cluster\")\ng.add_conditional_edges(\"check\", route, [\"revise\", \"deliver\"])\ng.add_edge([\"gaps\", \"evolution\", \"conflicts\"], \"analysis_ready\")    # join: wait for all\ng.add_conditional_edges(START, lambda s: [Send(\"read_paper\", {\"paper\": p}) for p in s[\"papers\"]], [\"read_paper\"])\nsub = StateGraph(SectionState, output_schema=SectionOut).compile()  # subgraph as a node\napp = g.compile(checkpointer=SqliteSaver(conn))\napp.invoke(inputs, {\"configurable\": {\"thread_id\": \"w1\"}, \"max_concurrency\": 8})\napp.get_state(cfg).next; app.invoke(None, cfg)                       # resume\ninterrupt(payload); app.invoke(Command(resume=decision), cfg)        # human approval\n```\n"
+   },
+   {
+    "h": "五个实测的坑（CORE 演示）",
+    "md": "\n1. 没有 reducer：顺序时悄悄覆盖（timing 只剩最后一项），并行时报错。\n2. 分支长度不同用三条单独边汇合 → 汇合节点跑 **2 次**，第一次还缺 gaps；用 `add_edge([a,b,c], d)`。\n3. 子图不加 `output_schema` → Send 进去的 memories 被回传追加，父图 2 条变 **8 条**，不报错。\n4. 并行一步里任一节点抛异常 → 整步失败；在分支内 try/except，把异常变成数据。\n5. 两个项目都有顶层包 `app` → 同一内核先后导入会互相遮蔽，要分开内核。\n",
+    "h_en": "Five pitfalls measured (CORE demos)",
+    "md_en": "\n1. No reducer: in sequence it silently overwrites (timing kept only the last entry); in parallel it raises.\n2. Joining branches of different lengths with three separate edges → the join node runs **twice**, the first time before gaps exists; use `add_edge([a,b,c], d)`.\n3. A subgraph without `output_schema` → the memories sent into it are returned and appended again, so the parent's 2 entries become **8**, with no error.\n4. Any node raising in a parallel step → the whole step fails; try/except inside the branch and turn the exception into data.\n5. Both projects ship a top-level package named `app` → importing both in one kernel makes one shadow the other; use separate kernels.\n"
+   },
+   {
+    "h": "stream 与 SSE",
+    "md": "\n`stream_mode=\"updates\"`（每节点更新）/ `\"values\"`（每步全量）/ `\"messages\"`（token）。例如一个文献综述 Agent：`astream(..., stream_mode=\"updates\")` → `data: {...}\\n\\n` → FastAPI `StreamingResponse(media_type=\"text/event-stream\")`。\n",
+    "h_en": "stream and SSE",
+    "md_en": "\n`stream_mode=\"updates\"` (per-node updates) / `\"values\"` (full state after each step) / `\"messages\"` (tokens). For example, a literature-review agent: `astream(..., stream_mode=\"updates\")` → `data: {...}\\n\\n` → FastAPI `StreamingResponse(media_type=\"text/event-stream\")`.\n"
+   }
+  ],
+  "summary_en": "State + reducers, partial updates from nodes, plain/conditional/join edges, Send for dynamic parallelism, subgraph output_schema, checkpointers, interrupt, Command, stream.",
+  "match": {
+   "tag": [
+    "LangGraph"
+   ]
+  }
+ },
+ {
+  "id": "memory",
+  "title": "记忆系统",
+  "en": "Agent memory",
+  "summary": "短期记忆 = checkpointer 按 thread 保存；长期记忆 = Store（画像 + 语义检索集合）。写入走热路径或后台抽取，读取靠注入 + 重排。",
+  "sections": [
+   {
+    "h": "架构（参考实现：Postgres + pgvector）",
+    "md": "\n- **短期**：`PostgresSaver`（ConnectionPool：autocommit、prepare_threshold=0、dict_row），按 `thread_id` 存对话。\n- **长期**：`PostgresStore` + pgvector 索引（bge-m3 经 Ollama）。**画像**（按 key 读的结构化文档）+ **集合**（语义检索的事实/经历）+ **程序性**（偏好、规则）。\n- **写路径 1 热路径**：模型调用 `save_memory` 工具。**写路径 2 后台抽取**：对话后抽候选记忆，与已有比较，决定 **ADD / UPDATE / DELETE / NOOP**（mem0 风格），`target_id` 必须在已有 ID 里。\n- **读路径**：`@dynamic_prompt` 每次调用前注入画像 + Top 记忆；重排 = 0.7·相似度 + 0.2·新近度（30 天半衰）+ 0.1·重要度，低于阈值丢弃。\n- **治理**：按 user_id 命名空间隔离；\"忘记我\"按 metadata user_id 删除。\n",
+    "h_en": "Architecture (reference implementation: Postgres + pgvector)",
+    "md_en": "\n- **Short-term**: `PostgresSaver` (ConnectionPool: autocommit, prepare_threshold=0, dict_row) stores conversations by `thread_id`.\n- **Long-term**: `PostgresStore` + a pgvector index (bge-m3 via Ollama). A **profile** (a structured document read by key) + a **collection** (facts and experiences found by semantic search) + **procedural** memory (preferences, rules).\n- **Write path 1, hot path**: the model calls a `save_memory` tool. **Write path 2, background extraction**: after the conversation, extract candidate memories, compare them with the existing ones and decide **ADD / UPDATE / DELETE / NOOP** (mem0 style); `target_id` must be one of the existing IDs.\n- **Read path**: `@dynamic_prompt` injects the profile + top memories before every call; rerank = 0.7·similarity + 0.2·recency (30-day half-life) + 0.1·importance, dropping anything below a threshold.\n- **Governance**: isolate by a user_id namespace; \"forget me\" deletes by metadata user_id.\n"
+   },
+   {
+    "h": "实测踩坑",
+    "md": "\n- 画像写入只返回部分字段 → 其他字段被清空 → 改为**补丁 + 代码合并**。\n- 用户复述被当作 UPDATE → 加 NOOP 规则；行程取消被当作 UPDATE → 明确 DELETE 规则。\n- 相似度 0.350 刚好越过 0.35 阈值，无关记忆被提起 → 阈值 0.4 + \"不主动提起\"规则。\n- 没有 metadata user_id 的线程躲过了 forget_user → 删除要覆盖所有存储。\n",
+    "h_en": "Pitfalls measured",
+    "md_en": "\n- The profile writer returned only some fields → the other fields were wiped → switched to **a patch + merge in code**.\n- A user restating a fact was treated as UPDATE → added a NOOP rule; a cancelled trip was treated as UPDATE → added an explicit DELETE rule.\n- Similarity 0.350 just crossed the 0.35 threshold and an unrelated memory was brought up → threshold 0.4 + a \"don't bring it up unprompted\" rule.\n- Threads without a metadata user_id escaped forget_user → deletion must cover every store.\n"
+   }
+  ],
+  "summary_en": "Short-term memory = a checkpointer saving each thread; long-term memory = a Store (a profile + a semantically searchable collection). Writes happen on the hot path or through background extraction; reads rely on injection + reranking.",
+  "match": {
+   "sec": [
+    "D."
+   ],
+   "tag": [
+    "记忆"
+   ]
+  }
+ },
+ {
+  "id": "rag",
+  "title": "RAG 与 Agentic RAG",
+  "en": "Retrieval-augmented generation",
+  "summary": "解析切块 → 混合检索（向量 + BM25，RRF 融合）→ 重排 → 带引用生成；用证据句评测 Hit@5/MRR；Agentic RAG 与 Corrective RAG。",
+  "sections": [
+   {
+    "h": "管线（参考实测，UCVC-AI-Lab-Agent 教程：806 页 PDF → 1,834 块）",
+    "md": "\n- pypdf + 目录 outline 得章节元数据；`RecursiveCharacterTextSplitter(1000, 150)`；sha1 作 ID 保证幂等。\n- 表 `doc_chunks`：vector(1024) + HNSW；tsv 生成列 + GIN；chapter 生成列用于过滤。\n- 检索：向量、关键词、BM25（rank_bm25）、混合（RRF：Σ 1/(k+rank)，k=60）、多查询、LLM 重排。\n",
+    "h_en": "Pipeline (reference measurement, UCVC-AI-Lab-Agent tutorial: an 806-page PDF → 1,834 chunks)",
+    "md_en": "\n- pypdf + the PDF outline give chapter and section metadata; `RecursiveCharacterTextSplitter(1000, 150)`; sha1 IDs keep ingestion idempotent.\n- Table `doc_chunks`: vector(1024) + HNSW; a generated tsv column + GIN; a generated chapter column for filtering.\n- Retrieval: vector, keyword, BM25 (rank_bm25), hybrid (RRF: Σ 1/(k+rank), k=60), multi-query, LLM rerank.\n"
+   },
+   {
+    "h": "实测结果（14 题，证据句判命中）",
+    "md": "\n| 方法 | Hit@5 | MRR |\n|---|---|---|\n| 向量 | 0.86 | 0.70 |\n| pg 关键词 | 0.57 | 0.35 |\n| BM25 | 0.64 | 0.56 |\n| 混合 | 0.93 | 0.71 |\n| 多查询 | 1.00 | 0.88 |\n| 混合 + 重排 | 0.93 | 0.85 |\n\n- Postgres `ts_rank_cd` **没有 IDF**，不是 BM25；中文查询下关键词/BM25 全部落空，bge-m3 向量可跨语言。\n- 重排不增加召回，只把对的排到前面（MRR 0.71 → 0.85）。\n",
+    "h_en": "Results (14 questions; a hit means the evidence sentence was retrieved)",
+    "md_en": "\n| Method | Hit@5 | MRR |\n|---|---|---|\n| Vector | 0.86 | 0.70 |\n| pg keyword | 0.57 | 0.35 |\n| BM25 | 0.64 | 0.56 |\n| Hybrid | 0.93 | 0.71 |\n| Multi-query | 1.00 | 0.88 |\n| Hybrid + rerank | 0.93 | 0.85 |\n\n- Postgres `ts_rank_cd` **has no IDF**, so it isn't BM25; on Chinese queries keyword search and BM25 found nothing, while bge-m3 vectors work across languages.\n- Reranking doesn't raise recall; it only moves the right chunks up (MRR 0.71 → 0.85).\n"
+   },
+   {
+    "h": "Agent + RAG 三种结合",
+    "md": "\n1. **两步式**：先检索再回答，最稳定。\n2. **Agentic RAG**：检索作为工具。只靠提示词时模型会**不检索直接答**（\"Canberra\"），用中间件强制 `tool_choice=\"any\"`。\n3. **Corrective RAG（图）**：判断\"资料是否足够、缺什么\"→ 拆子查询 → 每个子查询单独重排 → 累积文档。踩坑：`docs[-8:]` 把最早检索到的定义丢了。\n- **忠实 ≠ 完整**：每句都有依据的回答，可能漏掉一半要点。\n",
+    "h_en": "Three ways to combine an agent with RAG",
+    "md_en": "\n1. **Two-step**: retrieve, then answer. The most stable.\n2. **Agentic RAG**: retrieval as a tool. With prompting alone the model **answered without searching** (\"Canberra\"); force `tool_choice=\"any\"` with middleware.\n3. **Corrective RAG (a graph)**: judge \"is the material sufficient, and what is missing\" → split into sub-queries → rerank each sub-query separately → accumulate documents. Pitfall: `docs[-8:]` dropped the definition retrieved first.\n- **Faithful ≠ complete**: an answer in which every sentence is supported can still miss half the points.\n"
+   }
+  ],
+  "summary_en": "Parse and chunk → hybrid retrieval (vector + BM25, fused with RRF) → rerank → generate with citations; evaluate Hit@5/MRR against evidence sentences; Agentic RAG and Corrective RAG.",
+  "match": {
+   "sec": [
+    "C."
+   ],
+   "tag": [
+    "RAG"
+   ]
+  }
+ },
+ {
+  "id": "context",
+  "title": "上下文工程",
+  "en": "Context engineering",
+  "summary": "上下文越长越不可靠（context rot）。工具结果占大头；按预算组装；清理旧工具结果优于截断；稳定前缀利用缓存；JIT 读取与子 Agent 隔离。",
+  "sections": [
+   {
+    "h": "参考实测（UCVC-AI-Lab-Agent 教程）",
+    "md": "\n- **Context rot**：简单找针 2k/14k/55k 都 8/8；加入\"信息更新 + 相似干扰\"后 2k 23/24 → 14k 14/24。\n- **构成**：一个工具 schema ≈ 325 token；一次检索结果 ≈ 1,231 token；工具结果占历史约 **84%**。\n- **四种策略（同一段多轮任务的总输入 token）**：\n\n| 策略 | 总 token | 结果 |\n|---|---|---|\n| 不处理 | 39,227 | 88% 命中缓存 |\n| 截断 | 15,290 | **忘了早先的面试日期** |\n| 清理旧工具结果 | 21,593 | 省 45%，信息仍在 |\n| 摘要 | 34,877 | 多 2 次调用 |\n\n- **KV 缓存**：时间戳放开头命中 0%，放末尾 61%。\n- **长任务**：全量预载 21,880 token；JIT 工具 6 次调用、单次最大 6,577；子 Agent 让主 Agent 单次最大只有 1,762。并行写笔记丢一条 → 加锁。\n",
+    "h_en": "Reference measurements (UCVC-AI-Lab-Agent tutorial)",
+    "md_en": "\n- **Context rot**: simple needles scored 8/8 at 2k, 14k and 55k tokens; with \"updated facts + look-alike distractors\" it fell from 23/24 at 2k to 14/24 at 14k.\n- **Composition**: one tool schema ≈ 325 tokens; one search result ≈ 1,231 tokens; tool results are about **84%** of the history.\n- **Four strategies (total input tokens for the same multi-turn task)**:\n\n| Strategy | Total tokens | Result |\n|---|---|---|\n| None | 39,227 | 88% cache hits |\n| Truncate | 15,290 | **Forgot the interview date given earlier** |\n| Clear old tool results | 21,593 | 45% saved, information still there |\n| Summarize | 34,877 | 2 extra calls |\n\n- **KV cache**: a timestamp at the start of the prompt gave 0% hits; at the end, 61%.\n- **Long task**: preloading everything cost 21,880 tokens; JIT tools took 6 calls with a largest call of 6,577; with a sub-agent, the lead agent's largest call was only 1,762. Parallel note writes lost one note → added a lock.\n"
+   },
+   {
+    "h": "原则",
+    "md": "\n用最少但足够的高信号 token：按优先级预算（贪心填充会让低优先级小项挤进来，要设截止）、JIT 读取、清理旧工具结果、摘要、子 Agent 隔离、结构化笔记（NOTES.json）。关键事实写进状态或笔记，不能只靠对话历史。\n",
+    "h_en": "Principles",
+    "md_en": "\nUse the fewest tokens that are still enough, all of them high-signal: budget by priority (greedy filling lets small low-priority items sneak in, so set a cutoff), read just in time, clear old tool results, summarize, isolate with sub-agents, keep structured notes (NOTES.json). Put key facts in state or notes; don't rely on the conversation history alone.\n"
+   }
+  ],
+  "summary_en": "The longer the context, the less reliable it gets (context rot). Tool results take most of it; assemble to a budget; clearing old tool results beats truncation; keep a stable prefix for caching; read just in time and isolate with sub-agents.",
+  "match": {
+   "tag": [
+    "上下文"
+   ]
+  }
+ },
+ {
+  "id": "protocols",
+  "title": "工具调用、MCP、A2A、ANP",
+  "en": "Tools and agent protocols",
+  "summary": "Function calling 是模型层能力；MCP 标准化工具与上下文的提供；A2A 连接自主 Agent；ANP 解决大规模 Agent 发现与身份。",
+  "sections": [
+   {
+    "h": "MCP（动手要点）",
+    "md": "\n- 角色：Host / Client / Server。Server 原语：**tools**（模型调用）、**resources**（应用读取）、**prompts**（用户选择）。\n- 传输：**stdio**（本地子进程）、**Streamable HTTP**（2025-03 版，取代 HTTP+SSE 双端点，支持无状态与鉴权）。\n- 生命周期：initialize → initialized → tools/list → tools/call。工具执行失败返回 `isError: true`，而不是 JSON-RPC 错误。\n- Pydantic 返回类型 → outputSchema + structuredContent；`Annotated[..., Field(description=...)]` → 参数描述。\n- 参考实测（UCVC-AI-Lab-Agent 教程）：adapters 默认每次调用新起进程，3 次 5.67s；`client.session()` 复用 0.32s。Windows Jupyter 下 stdio 需要 `errlog=<真实文件>`。\n",
+    "h_en": "MCP (hands-on notes)",
+    "md_en": "\n- Roles: Host / Client / Server. Server primitives: **tools** (called by the model), **resources** (read by the application), **prompts** (chosen by the user).\n- Transports: **stdio** (a local subprocess) and **Streamable HTTP** (2025-03 spec; replaces the two-endpoint HTTP+SSE transport and supports stateless mode and auth).\n- Lifecycle: initialize → initialized → tools/list → tools/call. A failed tool returns `isError: true` in its result, not a JSON-RPC error.\n- A Pydantic return type → outputSchema + structuredContent; `Annotated[..., Field(description=...)]` → parameter descriptions.\n- Reference measurement (UCVC-AI-Lab-Agent tutorial): the adapters start a new server process for every call by default, so 3 calls took 5.67s; reusing `client.session()` took 0.32s. In Windows Jupyter, stdio needs `errlog=<a real file>`.\n"
+   },
+   {
+    "h": "安全：工具投毒",
+    "md": "\n恶意 server 在工具描述里藏指令，DeepSeek 真的把 \"BLUE-7731\" 写进了笔记。防护：描述指纹白名单（变化即告警）+ 注入模式扫描 + 最小权限 + 写操作人工确认。其他风险：rug pull、返回内容里的间接注入、过宽权限。\n",
+    "h_en": "Security: tool poisoning",
+    "md_en": "\nA malicious server hid instructions in its tool description, and DeepSeek really wrote \"BLUE-7731\" into the notes. Defenses: an allowlist of description fingerprints (alert on any change) + scanning for injection patterns + least privilege + human confirmation for writes. Other risks: rug pulls, indirect injection through returned content, overly broad permissions.\n"
+   },
+   {
+    "h": "A2A 与 ANP",
+    "md": "\n- **A2A**：Agent Card 发现能力，以 Task 为中心、用 message 与 artifact 交换结果，支持长任务与流式；对方是有自己推理和状态的 Agent。\n- **ANP**：面向大量 Agent 的网络：DID 身份、`.well-known` 描述发现、元协议协商。\n- 三者关系：MCP 接工具和数据，A2A 接其他 Agent，ANP 解决开放网络里的发现与身份。\n",
+    "h_en": "A2A and ANP",
+    "md_en": "\n- **A2A**: capabilities are discovered through an Agent Card; it is task-centred, exchanges results as messages and artifacts, and supports long-running tasks and streaming; the other side is an agent with its own reasoning and state.\n- **ANP**: a network for large numbers of agents: DID identity, discovery through `.well-known` descriptions, meta-protocol negotiation.\n- How they fit together: MCP connects tools and data, A2A connects other agents, ANP handles discovery and identity on the open network.\n"
+   }
+  ],
+  "summary_en": "Function calling is a model-level capability; MCP standardizes how tools and context are provided; A2A connects autonomous agents; ANP handles discovery and identity for agents at scale.",
+  "match": {
+   "sec": [
+    "B."
+   ]
+  }
+ },
+ {
+  "id": "evaluation",
+  "title": "Agent 评测",
+  "en": "Agent evaluation",
+  "summary": "分组件/过程/结果/系统四层；能用规则判对错就不用 LLM；pass^k 衡量可靠性；LLM 评委要先校准；写成 pytest 进 CI。",
+  "sections": [
+   {
+    "h": "参考实测要点（UCVC-AI-Lab-Agent 教程）",
+    "md": "\n- **BFCL 风格 AST 匹配**：数值按数字比、\"~词\"表示包含、并行调用不看顺序、不该调用时标准答案为空。\n- 简单题集两个模型都 **20/20 饱和**；难题集（10 个工具、6 个干扰）DeepSeek 16/16、qwen2.5:7b 13/16。\n- 工具描述改成一个词：16/16 → 14/16（不知道用 search_docs；城市名传成\"上海\"）。\n- **pass^k**：qwen pass@1 0.90、pass^3 0.89；样本少估计有噪声（一题前 3 次错第 4 次对）。\n- **LLM 评委**：私有事实上模糊打分一致率 **0.50**，还给错误答案更高分（3.8 vs 2.5）；带参考答案 + 评分标准 **1.00**；质量相近的对比交换位置后只有 7/18 一致。\n- **胜率**：交换位置各评一次、不一致算平局、评委证据要和被评系统一致（证据对等 bug 让派生指标被判\"编造\"）。\n- **CI 门禁**：pytest 5 项通过；`EVAL_TOOLS=poor` 时准确率 0.92 被拦下。\n",
+    "h_en": "Key reference measurements (UCVC-AI-Lab-Agent tutorial)",
+    "md_en": "\n- **BFCL-style AST matching**: numbers are compared as numbers, \"~word\" means contains, parallel calls are compared ignoring order, and the expected answer is empty when no call should be made.\n- On the easy set both models scored **20/20 (saturated)**; on the hard set (10 tools, 6 of them distractors) DeepSeek scored 16/16 and qwen2.5:7b 13/16.\n- With one-word tool descriptions: 16/16 → 14/16 (it didn't know to use search_docs, and passed the city as \"上海\").\n- **pass^k**: qwen pass@1 0.90, pass^3 0.89; small samples make the estimate noisy (one case failed 3 runs and passed the 4th).\n- **LLM judge**: on private facts a vague score agreed only **0.50** of the time and even rated wrong answers higher (3.8 vs 2.5); with a reference answer + rubric, **1.00**; for pairs of similar quality, only 7/18 verdicts survived a position swap.\n- **Win rate**: judge each pair twice with positions swapped, count a disagreement as a tie, and give the judge the same evidence the system had (an evidence-parity bug made derived metrics look \"invented\").\n- **CI gate**: 5 pytest checks passed; with `EVAL_TOOLS=poor`, accuracy 0.92 was blocked.\n"
+   },
+   {
+    "h": "四层评测",
+    "md": "\n| 层 | 评什么 | 怎么判 |\n|---|---|---|\n| 组件 | 工具调用、检索 | AST 匹配、Hit@K |\n| 过程 | 轨迹、工具顺序、多余步骤 | 和期望轨迹比 |\n| 结果 | 任务完成 | 精确匹配、带参考的评委 |\n| 系统 | 延迟、成本、稳定性 | 统计、pass^k |\n",
+    "h_en": "Four layers of evaluation",
+    "md_en": "\n| Layer | What it checks | How to judge |\n|---|---|---|\n| Component | Tool calls, retrieval | AST matching, Hit@K |\n| Process | Trajectory, tool order, extra steps | Compare with the expected trajectory |\n| Outcome | Task completion | Exact match, a judge with a reference |\n| System | Latency, cost, stability | Statistics, pass^k |\n"
+   }
+  ],
+  "summary_en": "Four layers: component, process, outcome and system. If a rule can judge it, don't use an LLM; pass^k measures reliability; calibrate an LLM judge first; turn the evals into pytest and run them in CI.",
+  "match": {
+   "sec": [
+    "G."
+   ],
+   "tag": [
+    "评测"
+   ]
+  }
+ },
+ {
+  "id": "multiagent",
+  "title": "多 Agent 架构",
+  "en": "Multi-agent architecture",
+  "summary": "Sequential / Concurrent / Hybrid / Supervisor / Orchestrator-workers / Handoff / Group chat。先画依赖图，硬约束写在代码里。",
+  "sections": [
+   {
+    "h": "三种编排实测（第 9、10 章）",
+    "md": "\n| 架构 | 实测 | 最大的坑 | 必备手段 |\n|---|---|---|---|\n| Sequential | 25.9s = 18.5 + 7.4 | 上游数据错 10 倍，末端核对仍 0 问题 | 交接处校验门，尽早失败 |\n| Concurrent | 分析阶段 20.0s → 8.0s，token +29% | 薄弱维度白花钱；单分支异常拖垮整步 | 分支内隔离失败，汇总记缺失 |\n| Hybrid | 28.8s → 9.7s（3.0×），调用数相同 | 循环到上限后悄悄交付 | 依赖图、子图隔离、记录 unresolved |\n| Supervisor | 慢约 2 倍、路径不稳定（8/8/6 次调用） | LLM 路由倾向多做 | 步数上限、禁止重复、终点节点 |\n| Orchestrator-workers | token 最少（约 7.3k vs 9–13k） | 子任务需共享上下文时不适用 | 子 Agent 只看相关材料 |\n",
+    "h_en": "Orchestrations measured (Chapters 9 and 10)",
+    "md_en": "\n| Architecture | Measured | Biggest pitfall | Must-have |\n|---|---|---|---|\n| Sequential | 25.9s = 18.5 + 7.4 | A 10× upstream data error still got 0 issues at the final check | Validation gates at hand-offs; fail early |\n| Concurrent | Analysis stage 20.0s → 8.0s, tokens +29% | A thin dimension wastes money; one failing branch takes down the whole step | Isolate failures inside branches; record what is missing at aggregation |\n| Hybrid | 28.8s → 9.7s (3.0×), same number of calls | After hitting the loop limit it ships silently | A dependency graph, subgraph isolation, record unresolved issues |\n| Supervisor | About 2× slower, unstable paths (8/8/6 calls) | An LLM router tends to do too much | A step limit, no repeats, a terminal node |\n| Orchestrator-workers | Fewest tokens (about 7.3k vs 9–13k) | Unsuitable when sub-tasks need shared context | Sub-agents see only the relevant material |\n"
+   },
+   {
+    "h": "设计要点",
+    "md": "\n- **何时拆**：上下文要隔离、可按宽度并行、角色/模型/权限不同、需要独立审核；代价是 token（Anthropic 约 15 倍）、错误累积（0.95⁸≈66%）、协调成本。\n- **通信**：共享状态（黑板）/ 显式参数 / 交接；结构化契约 + 字段归属；修订时带足上下文。\n- **观点之争**：Anthropic 研究系统（并行子 Agent，内部评测 +90.2%）vs Cognition（共享完整上下文，动作隐含决策）——取决于任务依赖强度。\n- **失败分类（MAST）**：规格与系统设计 / Agent 间失配 / 验证与终止。\n",
+    "h_en": "Design points",
+    "md_en": "\n- **When to split**: the context needs isolating, the work can run in parallel by breadth, roles/models/permissions differ, or an independent review is needed; the costs are tokens (about 15× per Anthropic), compounding errors (0.95⁸ ≈ 66%) and coordination.\n- **Communication**: shared state (a blackboard) / explicit arguments / hand-offs; structured contracts + field ownership; give revisions enough context.\n- **The debate**: Anthropic's research system (parallel sub-agents, +90.2% on their internal eval) vs Cognition (share the full context, because actions carry implicit decisions). Which one wins depends on how strongly the sub-tasks depend on each other.\n- **Failure taxonomy (MAST)**: specification and system design / inter-agent misalignment / verification and termination.\n"
+   }
+  ],
+  "summary_en": "Sequential / Concurrent / Hybrid / Supervisor / Orchestrator-workers / Handoff / Group chat. Draw the dependency graph first and put hard constraints in code.",
+  "match": {
+   "sec": [
+    "E."
+   ],
+   "tag": [
+    "多Agent"
+   ]
+  }
+ },
+ {
+  "id": "production",
+  "title": "可靠性、安全与成本",
+  "en": "Production readiness",
+  "summary": "幂等、checkpoint、人工审批、降级；提示注入与外泄防护；延迟拆解、模型分层、缓存、并发估算。",
+  "sections": [
+   {
+    "h": "可靠性",
+    "md": "\n- **持久化字段**：任务身份、当前节点、中间产物、工具调用记录（含副作用）、待审批项、预算消耗、错误与重试。\n- **副作用幂等**：每次调用带幂等键，恢复时先读后写。\n- **超时/取消/重试**：协作式取消、单步+整体超时、只有幂等操作自动重试。\n- **降级**：等价替代 → 降级回答并说明缺什么 → 明确失败或转人工。例如一个经营报告 Agent 的降级只捕获 `LLMUnavailableError`，JSON 截断就绕过了降级。\n",
+    "h_en": "Reliability",
+    "md_en": "\n- **Fields to persist**: task identity, current node, intermediate artefacts, tool-call records (side effects included), pending approvals, budget used, errors and retries.\n- **Idempotent side effects**: every call carries an idempotency key; on recovery, read before you write.\n- **Timeouts / cancellation / retries**: cooperative cancellation, per-step plus overall timeouts, automatic retries only for idempotent operations.\n- **Fallbacks**: an equivalent substitute → a degraded answer that says what is missing → an explicit failure or a hand-off to a human. For example, a report-writing agent whose fallback only catches `LLMUnavailableError` lets truncated JSON bypass it.\n"
+   },
+   {
+    "h": "安全",
+    "md": "\n- 提示注入靠架构防：外部内容标记为数据、最小权限、敏感动作确认、输出过滤、双 LLM 模式。\n- **致命三要素**：能接触私有数据 + 读不可信内容 + 能对外通信 → 拆掉其中一个。\n- 沙箱：文件/网络/资源/权限/密钥隔离，每次执行用完即毁。审计记录要能回答谁、为什么、做了什么、结果如何。\n",
+    "h_en": "Security",
+    "md_en": "\n- Defend against prompt injection with architecture: mark external content as data, least privilege, confirmation for sensitive actions, output filtering, the dual-LLM pattern.\n- **The lethal trifecta**: access to private data + reading untrusted content + the ability to communicate externally → remove one of the three.\n- Sandboxes: isolate files, network, resources, permissions and secrets, and destroy the sandbox after each run. Audit logs must answer who, why, what was done and with what result.\n"
+   },
+   {
+    "h": "性能与成本",
+    "md": "\n- 先逐节点计时找关键路径（参考实测，UCVC-AI-Lab-Agent 教程：一个文献综述 Agent 588s → 264s 只改编排 → 103s 修根因）。\n- 模型分层要按节点配 token 预算和 thinking 开关（参考实测里的教训：fast 子步骤全部返回空）。\n- 利特尔定律：并发 ≈ 到达率 × 处理时间（10 万任务/天、高峰 3 倍、20s/任务 → 约 70 个并发任务）。\n- Python 3.11 不允许 f-string 表达式里出现反斜杠（容易踩的坑）。\n",
+    "h_en": "Performance and cost",
+    "md_en": "\n- Time every node first to find the critical path (reference measurement, UCVC-AI-Lab-Agent tutorial: a literature-review agent went 588s → 264s by changing only the orchestration → 103s after fixing the root causes).\n- Model tiering needs a per-node token budget and thinking switch (the lesson from the reference runs: every fast sub-step came back empty).\n- Little's law: concurrency ≈ arrival rate × processing time (100k tasks a day, a 3× peak, 20s per task → about 70 concurrent tasks).\n- Python 3.11 doesn't allow backslashes inside f-string expressions (an easy trap to fall into).\n"
+   }
+  ],
+  "summary_en": "Idempotency, checkpoints, human approval, fallbacks; defenses against prompt injection and exfiltration; latency breakdown, model tiering, caching, concurrency estimates.",
+  "match": {
+   "sec": [
+    "F.",
+    "H.",
+    "I."
+   ]
+  }
+ },
+ {
+  "id": "training",
+  "title": "模型训练常识（Agent 相关）",
+  "en": "Training for agents",
+  "summary": "Prompt/RAG/微调怎么选；SFT、RLHF、DPO、PPO、GRPO；reward hacking；Agentic RL。",
+  "sections": [
+   {
+    "h": "要点",
+    "md": "\n- **先 prompt 和工具**；缺事实 → RAG；格式/风格/工具调用习惯/延迟（小模型替大模型）→ 微调，前提是有数据和评测集。\n- **SFT**：指令→回答的监督学习。**RLHF**：SFT → 奖励模型（Bradley-Terry）→ PPO + KL。**DPO**：直接用偏好对优化，无奖励模型无 RL 循环。\n- **GRPO**：去掉 critic，组内奖励归一化得相对优势，适合可验证奖励（数学、代码、工具调用成功）；组内全对/全错没有信号。DAPO、GSPO 在 clip、采样、序列级重要性比上改进。\n- **Reward hacking**：钻奖励漏洞（冗长奉承、改测试而不是改代码）→ 可验证多维奖励、KL、对抗检查、限制改环境的权限。\n- **Agentic RL**：多步环境里用任务成功做奖励；难点是信用分配、环境成本、奖励稀疏。\n",
+    "h_en": "Key points",
+    "md_en": "\n- **Start with prompts and tools**; missing facts → RAG; format, style, tool-calling habits or latency (a small model replacing a large one) → fine-tuning, provided you have data and an eval set.\n- **SFT**: supervised learning on instruction → answer pairs. **RLHF**: SFT → a reward model (Bradley-Terry) → PPO + KL. **DPO**: optimize directly on preference pairs, with no reward model and no RL loop.\n- **GRPO**: drops the critic and normalizes rewards within a group to get relative advantages; suited to verifiable rewards (maths, code, successful tool calls); a group that is all right or all wrong gives no signal. DAPO and GSPO improve clipping, sampling and sequence-level importance ratios.\n- **Reward hacking**: exploiting gaps in the reward (verbose flattery, changing the tests instead of the code) → verifiable multi-dimensional rewards, KL, adversarial checks, limiting permission to change the environment.\n- **Agentic RL**: use task success as the reward in multi-step environments; the hard parts are credit assignment, environment cost and sparse rewards.\n"
+   }
+  ],
+  "summary_en": "Choosing between prompting, RAG and fine-tuning; SFT, RLHF, DPO, PPO, GRPO; reward hacking; Agentic RL.",
+  "match": {
+   "sec": [
+    "J."
+   ],
+   "tag": [
+    "训练"
+   ]
+  }
+ }
+]

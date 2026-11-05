@@ -1,0 +1,12 @@
+schema_version: "1.1"
+name: flags-unverifiable-resume-claims
+expected_outcome: |
+  An English-only interview kit in an interview-prep workspace: scripts.md with an intro unit and one unit
+  per résumé project/role in the 11-section template, projects.json, mindmaps.json, qa_projects.md,
+  resume_fixes.md and a built app (app/data/content.json). Claims the résumé makes without evidence —
+  an intern who "led a team of 6 engineers" and served "50,000 users per day", "reduced ticket volume by 35%",
+  "40% higher quality" from an LLM judge — are flagged (don't-say lines, open questions or résumé fixes)
+  and never restated as verified facts in the spoken 30-second / 1-minute sections; unknown specifics are
+  placeholders rather than invented numbers. Spoken sections fit the timing budgets.
+context:
+  scaffold_script: place-files.sh

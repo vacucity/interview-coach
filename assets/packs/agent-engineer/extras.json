@@ -1,0 +1,254 @@
+[
+ {
+  "id": "framework",
+  "title": "答题结构与追问应对",
+  "kind": "md",
+  "md": "\n**任何技术题**：结论 → 机制 → 取舍 → 我的例子（带数字和口径）。\n\n**项目题（STAR + 技术四问）**：背景与目标 → 架构（画图）→ 每个环节的输入/处理/输出 → 提示词与模型选型 → 结果数字 → 踩过的坑和取舍。\n\n**被问住时**：\n1. 先复述问题，确认理解；\n2. 说出你确定的部分，再说你的推理（\"我没在生产里做过，但我会这样考虑……\"）；\n3. 给出验证方法（\"我会先做一个对照实验，看……\"）；\n4. 不要编数字、不要假装用过。\n\n**被追问细节时**：区分三种来源——代码里能核对的、你实验测出来的、设计文档里的目标。\n",
+  "title_en": "Answer structure and follow-ups",
+  "md_en": "\n**Any technical question**: conclusion → mechanism → trade-offs → my example (with numbers and how they were measured).\n\n**Project questions (STAR + four technical questions)**: background and goal → architecture (draw it) → input / processing / output of each step → prompts and model choice → result numbers → pitfalls hit and trade-offs made.\n\n**When you're stuck**:\n1. Restate the question to confirm you understood it;\n2. Say the part you're sure of, then your reasoning (\"I haven't done this in production, but I'd think about it like this…\");\n3. Give a way to verify it (\"I'd first run a controlled experiment to see…\");\n4. Don't invent numbers, and don't pretend you've used something.\n\n**When pressed for details**: separate three sources — what can be checked in the code, what you measured in experiments, and what was a goal in a design doc.\n"
+ },
+ {
+  "id": "checklist",
+  "title": "面试前检查清单",
+  "kind": "checklist",
+  "groups": [
+   {
+    "t": "D-7",
+    "items": [
+     "按 JD 从“我的项目”里选一个主讲项目",
+     "逐条核对简历和代码、实际结果，修掉不一致的地方",
+     "把要讲的每个项目的架构图在白纸上默画一遍",
+     "题库里所有“再练”的题过一遍",
+     "在“AI 项目深挖”里让 AI 面试官追问你的项目 2 轮"
+    ],
+    "t_en": "D-7",
+    "items_en": [
+     "Pick a lead project from My projects to match the JD",
+     "Check your résumé line by line against your code and actual results, and fix any mismatches",
+     "Draw the architecture diagram of every project you will present from memory on blank paper",
+     "Go through every question marked \"practise again\"",
+     "Do 2 rounds of AI deep-dive, letting the AI interviewer grill your project"
+    ]
+   },
+   {
+    "t": "D-1",
+    "items": [
+     "背熟项目里的关键数字（每个数字的口径）",
+     "准备 3 个 STAR 故事",
+     "查目标公司的产品和技术博客",
+     "准备 3 个反问问题（可参考“面试准备”里的反问清单）",
+     "1 分钟自我介绍中英各说 3 遍（HAS 结构）"
+    ],
+    "t_en": "D-1",
+    "items_en": [
+     "Memorise the key numbers from your projects (what each number measures)",
+     "Prepare 3 STAR stories",
+     "Look up the target company's products and tech blog",
+     "Prepare 3 questions to ask (see the list in Prep)",
+     "Give the 1-minute self-introduction 3 times each in Chinese and English (HAS structure)"
+    ]
+   },
+   {
+    "t": "当天",
+    "items": [
+     "项目的 GitHub 仓库能打开，记住关键文件的位置（编排、提示词、状态定义各在哪个文件）",
+     "笔和纸，用来画架构图",
+     "网络、摄像头、麦克风测试",
+     "开场先用 30 秒版本，留追问空间"
+    ],
+    "t_en": "On the day",
+    "items_en": [
+     "Project repos open on GitHub, and you know where the key files are (orchestration, prompts, state definitions)",
+     "Pen and paper for drawing architecture diagrams",
+     "Test the network, camera and microphone",
+     "Open with the 30-second version and leave room for follow-ups"
+    ]
+   },
+   {
+    "t": "面试后",
+    "items": [
+     "记下被问到的题和没答好的点",
+     "把新题加进题库或标为“再练”",
+     "当天发感谢邮件"
+    ],
+    "t_en": "After the interview",
+    "items_en": [
+     "Note the questions asked and the points you answered poorly",
+     "Add new questions to the bank or mark them \"practise again\"",
+     "Send a thank-you email the same day"
+    ]
+   }
+  ],
+  "title_en": "Pre-interview checklist"
+ },
+ {
+  "id": "ask",
+  "title": "反问面试官",
+  "kind": "list",
+  "items": [
+   "团队现在的 Agent 主要是固定 workflow 还是自主 Agent？为什么这样选？",
+   "你们怎么评测 Agent 的质量？有离线评测集和 CI 门禁吗？",
+   "线上最常见的失败是什么：检索、工具调用、还是幻觉？",
+   "模型选型和成本控制由谁负责？有按任务分层用模型吗？",
+   "这个岗位入职前三个月最需要交付的是什么？",
+   "团队怎么处理人工审核和高风险操作？",
+   "你们用 LangGraph / 自研编排 / 其他框架？踩过哪些坑？",
+   "我在这个岗位上最可能遇到的挑战是什么？"
+  ],
+  "title_en": "Questions to ask the interviewer",
+  "items_en": [
+   "Are the team's agents mostly fixed workflows or autonomous agents? Why that choice?",
+   "How do you evaluate agent quality? Do you have an offline eval set and a CI gate?",
+   "What fails most often in production: retrieval, tool calls or hallucination?",
+   "Who owns model choice and cost control? Do you tier models by task?",
+   "What would this role most need to deliver in the first three months?",
+   "How does the team handle human review and high-risk actions?",
+   "Do you use LangGraph, an in-house orchestrator or another framework? What pitfalls have you hit?",
+   "What's the biggest challenge I'd likely face in this role?"
+  ]
+ },
+ {
+  "id": "design",
+  "title": "系统设计答题框架",
+  "kind": "md",
+  "md": "\n1. **澄清**：用户是谁、输入输出、量级（QPS / 每天任务数）、SLA、哪些操作高风险。\n2. **先画主干**：数据 → 检索/工具 → 编排（workflow 还是 agent）→ 输出 → 审核。\n3. **契约**：每个 Agent 的输入输出 schema；字段归属。\n4. **可靠性**：超时、重试（带反馈）、降级、幂等、checkpoint、人工审批位置。\n5. **质量**：能用代码验证的用代码；LLM 评委带参考；评测集 + CI。\n6. **安全**：注入防护、最小权限、沙箱、审计。\n7. **成本与延迟**：逐节点计时、并行、模型分层、缓存；用利特尔定律估并发。\n8. **演进**：先单 Agent + 工具，再在依赖少的地方拆分。\n\n题库 **L1–L4**（客服、深度研究、Text-to-SQL、编程 Agent）可以直接用这个框架练。\n",
+  "title_en": "System design answer framework",
+  "md_en": "\n1. **Clarify**: who the users are, inputs and outputs, scale (QPS / tasks per day), SLA, which actions are high-risk.\n2. **Draw the backbone first**: data → retrieval/tools → orchestration (workflow or agent) → output → review.\n3. **Contracts**: each agent's input and output schema; field ownership.\n4. **Reliability**: timeouts, retries (with feedback), fallbacks, idempotency, checkpoints, where human approval sits.\n5. **Quality**: verify in code whatever code can verify; LLM judges with references; an eval set + CI.\n6. **Security**: injection defenses, least privilege, sandboxing, auditing.\n7. **Cost and latency**: time every node, parallelize, tier models, cache; estimate concurrency with Little's law.\n8. **Evolution**: start with a single agent + tools, then split where dependencies are few.\n\nBank questions **L1–L4** (customer service, deep research, Text-to-SQL, coding agent) are good practice for this framework.\n"
+ },
+ {
+  "id": "glossary",
+  "title": "术语表",
+  "kind": "table",
+  "rows": [
+   [
+    "Agent / Workflow",
+    "智能体 / 工作流",
+    "控制流由 LLM 还是代码决定",
+    "Whether the LLM or code decides the control flow"
+   ],
+   [
+    "ReAct",
+    "推理-行动",
+    "Thought → Action → Observation 循环",
+    "A Thought → Action → Observation loop"
+   ],
+   [
+    "Reducer",
+    "归并函数",
+    "定义并行写同一字段如何合并",
+    "Defines how parallel writes to one field are merged"
+   ],
+   [
+    "Superstep",
+    "超步",
+    "LangGraph 一步一批执行节点",
+    "LangGraph runs nodes one batch per step"
+   ],
+   [
+    "Send",
+    "动态派发",
+    "条件边返回多个任务实现 fan-out",
+    "A conditional edge returns several tasks to fan out"
+   ],
+   [
+    "Checkpointer",
+    "检查点",
+    "按 thread_id 保存每步状态",
+    "Saves the state after every step under a thread_id"
+   ],
+   [
+    "interrupt",
+    "中断",
+    "人在回路：暂停等审批",
+    "Human in the loop: pause and wait for approval"
+   ],
+   [
+    "RRF",
+    "倒数排名融合",
+    "Σ 1/(k + rank) 融合多路检索",
+    "Σ 1/(k + rank) fuses several retrievers"
+   ],
+   [
+    "Hit@K / MRR",
+    "命中率 / 平均倒数排名",
+    "检索评测指标",
+    "Retrieval evaluation metrics"
+   ],
+   [
+    "Context rot",
+    "上下文腐烂",
+    "上下文越长，信息利用越差",
+    "The longer the context, the worse information in it is used"
+   ],
+   [
+    "KV cache",
+    "前缀缓存",
+    "稳定前缀放前面命中率高",
+    "A stable prefix placed first gets more cache hits"
+   ],
+   [
+    "MCP",
+    "模型上下文协议",
+    "tools / resources / prompts",
+    "tools / resources / prompts"
+   ],
+   [
+    "A2A",
+    "Agent 间协议",
+    "Agent Card、Task、Artifact",
+    "Agent Card, Task, Artifact"
+   ],
+   [
+    "pass^k",
+    "k 次全对率",
+    "衡量可靠性",
+    "Measures reliability"
+   ],
+   [
+    "LLM-as-judge",
+    "LLM 评委",
+    "需参考答案、交换位置、校准",
+    "Needs reference answers, position swaps and calibration"
+   ],
+   [
+    "Evidence parity",
+    "证据对等",
+    "评委看到的输入要和系统一致",
+    "The judge must see the same inputs as the system"
+   ],
+   [
+    "Idempotency",
+    "幂等",
+    "重复执行不产生额外副作用",
+    "Running it again causes no extra side effects"
+   ],
+   [
+    "Lethal trifecta",
+    "致命三要素",
+    "私有数据 + 不可信内容 + 对外通信",
+    "Private data + untrusted content + external communication"
+   ],
+   [
+    "GRPO",
+    "组相对策略优化",
+    "无 critic，组内归一化优势",
+    "No critic; advantages normalized within a group"
+   ],
+   [
+    "Harness",
+    "运行框架",
+    "包在模型外面的工程层",
+    "The engineering layer wrapped around the model"
+   ]
+  ],
+  "title_en": "Glossary"
+ },
+ {
+  "id": "plan",
+  "title": "7 天冲刺计划（配合本应用）",
+  "kind": "md",
+  "md": "\n| 天 | 内容 | 用本应用的哪里 |\n|---|---|---|\n| 1 | Agent 基础、LangChain / LangGraph 语法 | 知识库 1–4 + 思维导图“全景”“LangGraph” |\n| 2 | RAG、记忆、上下文工程 | 知识库 5–7 + 闪卡（RAG、上下文标签） |\n| 3 | 工具、MCP、评测 | 知识库 8–9 + 题库 B、G |\n| 4 | 多 Agent 与生产化 | 知识库 10–11 + 题库 E、F、K+ |\n| 5 | 你的主讲项目 | 我的项目 + 白板默画架构图 + AI 项目深挖 |\n| 6 | 你的其他项目 | 我的项目 + 讲述稿 + 简历与代码一致性 |\n| 7 | 全真模拟 | 模拟面试（综合 8 题，开 AI 评分）+ 复盘“再练” |\n\n每天开始先做 10 分钟闪卡复习。\n",
+  "title_en": "7-day sprint plan (with this app)",
+  "md_en": "\n| Day | Topics | Where in this app |\n|---|---|---|\n| 1 | Agent fundamentals, LangChain / LangGraph syntax | Knowledge 1–4 + the \"Agent development\" and \"LangGraph\" mind maps |\n| 2 | RAG, memory, context engineering | Knowledge 5–7 + flashcards (RAG and context tags) |\n| 3 | Tools, MCP, evaluation | Knowledge 8–9 + bank sections B and G |\n| 4 | Multi-agent and production | Knowledge 10–11 + bank sections E, F and K+ |\n| 5 | Your lead project | My projects + whiteboard drill of the architecture + AI deep-dive |\n| 6 | Your other projects | My projects + walkthrough scripts + résumé-vs-code consistency |\n| 7 | Full mock interview | Mock interview (8 mixed questions, AI grading on) + review \"practise again\" |\n\nStart each day with 10 minutes of flashcards.\n"
+ }
+]

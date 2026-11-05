@@ -1,0 +1,12 @@
+{
+  "name": "agent-engineer",
+  "title": "Agent 面试训练营",
+  "title_en": "Agent Interview Coach",
+  "for_roles": ["AI Agent engineer", "LLM application engineer", "AI engineer", "RAG engineer", "Agent 开发", "大模型应用开发"],
+  "contents": "12 knowledge modules (Agent basics, frameworks, LangChain, LangGraph, memory, RAG, context engineering, tools/MCP/A2A, evaluation, multi-agent, production, training), a 115-question bilingual bank (sections A–M and K+), 7 topic mind maps, 6 generic prep pages",
+  "focus_tags": ["RAG", "多Agent", "LangGraph", "工具/MCP", "评测", "上下文", "记忆", "安全", "性能成本", "LangChain", "训练", "系统设计"],
+  "links": [
+    { "title": "UCVC-AI-Lab-Agent", "url": "https://github.com/vacucity/UCVC-AI-Lab-Agent", "desc": "工程版 Agent 教程：本题库“参考实测”数字的来源 / the tutorial behind the reference measurements" },
+    { "title": "Datawhale Hello-Agents", "url": "https://github.com/datawhalechina/hello-agents", "desc": "原教程 / the original tutorial" }
+  ]
+}

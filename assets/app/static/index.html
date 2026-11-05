@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interview Coach</title>
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside id="side">
+  <div class="brand"><img src="assets/icon.png" alt=""><div><b id="brand-title">Interview Coach</b><span>Interview Coach</span></div></div>
+  <nav id="nav">
+    <a href="#/dashboard" data-r="dashboard"><i>🏠</i>总览</a>
+    <a href="#/knowledge" data-r="knowledge"><i>📚</i>知识库</a>
+    <a href="#/maps" data-r="maps"><i>🧠</i>思维导图</a>
+    <a href="#/projects" data-r="projects"><i>🧩</i>我的项目</a>
+    <a href="#/bank" data-r="bank"><i>❓</i>题库</a>
+    <a href="#/cards" data-r="cards"><i>🃏</i>闪卡复习</a>
+    <a href="#/mock" data-r="mock"><i>🎤</i>模拟面试</a>
+    <a href="#/interview" data-r="interview"><i>🤖</i>AI 项目深挖</a>
+    <a href="#/prep" data-r="prep"><i>🧭</i>面试准备</a>
+    <a href="#/script" data-r="script"><i>📝</i>面试稿</a>
+    <a href="#/files" data-r="files"><i>📁</i>原始资料</a>
+  </nav>
+  <div class="side-foot"><span id="ai-dot" class="dot"></span><span id="ai-text">连接中…</span></div>
+</aside>
+<div id="wrap">
+  <header id="top">
+    <input id="search" type="search" placeholder="搜索题目、知识点、术语、面试稿…（按 / 聚焦）">
+    <div class="seg" id="lang">
+      <button data-act="lang" data-arg="zh">中</button><button data-act="lang" data-arg="en">EN</button><button data-act="lang" data-arg="both">双语</button>
+    </div>
+    <button class="icon" data-act="theme" title="切换深色 / 浅色">◐</button>
+  </header>
+  <main id="main"><div class="loading">加载内容…</div></main>
+</div>
+<div id="drawer" class="hidden">
+  <div class="drawer-head"><b id="drawer-title">AI 讲解</b><button class="icon" data-act="drawer-close">✕</button></div>
+  <div id="drawer-body"></div>
+</div>
+<div id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

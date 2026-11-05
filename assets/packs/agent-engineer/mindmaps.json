@@ -1,0 +1,1198 @@
+[
+ {
+  "id": "overview",
+  "title": "Agent 开发全景",
+  "group": "总览",
+  "root": {
+   "t": "Agent 开发",
+   "c": [
+    {
+     "t": "基础",
+     "c": [
+      {
+       "t": "定义：LLM + 工具 + 状态 + 循环",
+       "c": [],
+       "t_en": "Definition: LLM + tools + state + loop"
+      },
+      {
+       "t": "Workflow vs Agent",
+       "c": [
+        {
+         "t": "提示链",
+         "c": [],
+         "t_en": "Prompt chaining"
+        },
+        {
+         "t": "路由",
+         "c": [],
+         "t_en": "Routing"
+        },
+        {
+         "t": "并行",
+         "c": [],
+         "t_en": "Parallelization"
+        },
+        {
+         "t": "中心调度",
+         "c": [],
+         "t_en": "Orchestrator-workers"
+        },
+        {
+         "t": "评估-优化",
+         "c": [],
+         "t_en": "Evaluator-optimizer"
+        }
+       ],
+       "t_en": "Workflow vs Agent"
+      },
+      {
+       "t": "范式",
+       "c": [
+        {
+         "t": "ReAct",
+         "c": [],
+         "t_en": "ReAct"
+        },
+        {
+         "t": "Plan-and-Solve",
+         "c": [],
+         "t_en": "Plan-and-Solve"
+        },
+        {
+         "t": "Reflection",
+         "c": [],
+         "t_en": "Reflection"
+        }
+       ],
+       "t_en": "Paradigms"
+      },
+      {
+       "t": "Harness：代码负责的事",
+       "c": [],
+       "t_en": "Harness: what code owns"
+      }
+     ],
+     "t_en": "Foundations"
+    },
+    {
+     "t": "框架",
+     "c": [
+      {
+       "t": "LangChain：组件 + create_agent",
+       "c": [],
+       "t_en": "LangChain: components + create_agent"
+      },
+      {
+       "t": "LangGraph：有状态图",
+       "c": [],
+       "t_en": "LangGraph: stateful graphs"
+      },
+      {
+       "t": "AutoGen / AgentScope / CAMEL",
+       "c": [],
+       "t_en": "AutoGen / AgentScope / CAMEL"
+      }
+     ],
+     "t_en": "Frameworks"
+    },
+    {
+     "t": "记忆",
+     "c": [
+      {
+       "t": "短期：checkpointer",
+       "c": [],
+       "t_en": "Short-term: checkpointer"
+      },
+      {
+       "t": "长期：Store + 向量",
+       "c": [],
+       "t_en": "Long-term: Store + vectors"
+      },
+      {
+       "t": "写：热路径 / 后台抽取",
+       "c": [],
+       "t_en": "Write: hot path / background extraction"
+      },
+      {
+       "t": "读：注入 + 重排",
+       "c": [],
+       "t_en": "Read: injection + rerank"
+      }
+     ],
+     "t_en": "Memory"
+    },
+    {
+     "t": "RAG",
+     "c": [
+      {
+       "t": "切块与元数据",
+       "c": [],
+       "t_en": "Chunking and metadata"
+      },
+      {
+       "t": "混合检索 + RRF",
+       "c": [],
+       "t_en": "Hybrid retrieval + RRF"
+      },
+      {
+       "t": "重排",
+       "c": [],
+       "t_en": "Reranking"
+      },
+      {
+       "t": "Agentic / Corrective RAG",
+       "c": [],
+       "t_en": "Agentic / Corrective RAG"
+      },
+      {
+       "t": "Hit@5 / MRR",
+       "c": [],
+       "t_en": "Hit@5 / MRR"
+      }
+     ],
+     "t_en": "RAG"
+    },
+    {
+     "t": "上下文工程",
+     "c": [
+      {
+       "t": "Context rot",
+       "c": [],
+       "t_en": "Context rot"
+      },
+      {
+       "t": "预算组装",
+       "c": [],
+       "t_en": "Budgeted assembly"
+      },
+      {
+       "t": "清理工具结果",
+       "c": [],
+       "t_en": "Clear tool results"
+      },
+      {
+       "t": "KV 缓存",
+       "c": [],
+       "t_en": "KV cache"
+      },
+      {
+       "t": "JIT + 子 Agent + 笔记",
+       "c": [],
+       "t_en": "JIT + sub-agents + notes"
+      }
+     ],
+     "t_en": "Context engineering"
+    },
+    {
+     "t": "工具与协议",
+     "c": [
+      {
+       "t": "Function calling",
+       "c": [],
+       "t_en": "Function calling"
+      },
+      {
+       "t": "MCP：tools/resources/prompts",
+       "c": [],
+       "t_en": "MCP: tools/resources/prompts"
+      },
+      {
+       "t": "A2A / ANP",
+       "c": [],
+       "t_en": "A2A / ANP"
+      },
+      {
+       "t": "工具投毒",
+       "c": [],
+       "t_en": "Tool poisoning"
+      }
+     ],
+     "t_en": "Tools and protocols"
+    },
+    {
+     "t": "多 Agent",
+     "c": [
+      {
+       "t": "Sequential",
+       "c": [],
+       "t_en": "Sequential"
+      },
+      {
+       "t": "Concurrent",
+       "c": [],
+       "t_en": "Concurrent"
+      },
+      {
+       "t": "Hybrid",
+       "c": [],
+       "t_en": "Hybrid"
+      },
+      {
+       "t": "Supervisor / Orchestrator",
+       "c": [],
+       "t_en": "Supervisor / Orchestrator"
+      },
+      {
+       "t": "通信与状态",
+       "c": [],
+       "t_en": "Communication and state"
+      }
+     ],
+     "t_en": "Multi-agent"
+    },
+    {
+     "t": "评测",
+     "c": [
+      {
+       "t": "四层",
+       "c": [],
+       "t_en": "Four layers"
+      },
+      {
+       "t": "BFCL / τ-bench / GAIA",
+       "c": [],
+       "t_en": "BFCL / τ-bench / GAIA"
+      },
+      {
+       "t": "pass^k",
+       "c": [],
+       "t_en": "pass^k"
+      },
+      {
+       "t": "LLM 评委校准",
+       "c": [],
+       "t_en": "Calibrating LLM judges"
+      },
+      {
+       "t": "CI 门禁",
+       "c": [],
+       "t_en": "CI gate"
+      }
+     ],
+     "t_en": "Evaluation"
+    },
+    {
+     "t": "生产",
+     "c": [
+      {
+       "t": "幂等与恢复",
+       "c": [],
+       "t_en": "Idempotency and recovery"
+      },
+      {
+       "t": "人工审批",
+       "c": [],
+       "t_en": "Human approval"
+      },
+      {
+       "t": "降级",
+       "c": [],
+       "t_en": "Fallbacks"
+      },
+      {
+       "t": "注入与沙箱",
+       "c": [],
+       "t_en": "Injection and sandboxing"
+      },
+      {
+       "t": "延迟与成本",
+       "c": [],
+       "t_en": "Latency and cost"
+      }
+     ],
+     "t_en": "Production"
+    },
+    {
+     "t": "训练",
+     "c": [
+      {
+       "t": "SFT / RLHF / DPO",
+       "c": [],
+       "t_en": "SFT / RLHF / DPO"
+      },
+      {
+       "t": "PPO / GRPO",
+       "c": [],
+       "t_en": "PPO / GRPO"
+      },
+      {
+       "t": "Reward hacking",
+       "c": [],
+       "t_en": "Reward hacking"
+      },
+      {
+       "t": "Agentic RL",
+       "c": [],
+       "t_en": "Agentic RL"
+      }
+     ],
+     "t_en": "Training"
+    }
+   ],
+   "t_en": "Agent development"
+  },
+  "title_en": "Agent development at a glance"
+ },
+ {
+  "id": "langgraph",
+  "title": "LangGraph 语法",
+  "group": "专题",
+  "root": {
+   "t": "LangGraph",
+   "c": [
+    {
+     "t": "State",
+     "c": [
+      {
+       "t": "TypedDict",
+       "c": [],
+       "t_en": "TypedDict"
+      },
+      {
+       "t": "Reducer：operator.add / merge",
+       "c": [],
+       "t_en": "Reducer: operator.add / merge"
+      },
+      {
+       "t": "默认后写覆盖",
+       "c": [],
+       "t_en": "Default: a later write overwrites"
+      }
+     ],
+     "t_en": "State"
+    },
+    {
+     "t": "Node",
+     "c": [
+      {
+       "t": "返回局部更新",
+       "c": [],
+       "t_en": "Returns a partial update"
+      },
+      {
+       "t": "工厂函数避免闭包坑",
+       "c": [],
+       "t_en": "Factory functions avoid the closure trap"
+      }
+     ],
+     "t_en": "Node"
+    },
+    {
+     "t": "Edge",
+     "c": [
+      {
+       "t": "add_edge 顺序",
+       "c": [],
+       "t_en": "add_edge: sequence"
+      },
+      {
+       "t": "add_conditional_edges 路由",
+       "c": [],
+       "t_en": "add_conditional_edges: routing"
+      },
+      {
+       "t": "add_edge([a,b,c], d) 汇合",
+       "c": [],
+       "t_en": "add_edge([a,b,c], d): join"
+      },
+      {
+       "t": "Send 动态并行",
+       "c": [],
+       "t_en": "Send: dynamic parallelism"
+      }
+     ],
+     "t_en": "Edge"
+    },
+    {
+     "t": "子图",
+     "c": [
+      {
+       "t": "编译后当节点",
+       "c": [],
+       "t_en": "Compiled, then used as a node"
+      },
+      {
+       "t": "output_schema 防回传",
+       "c": [],
+       "t_en": "output_schema stops the echo back"
+      }
+     ],
+     "t_en": "Subgraph"
+    },
+    {
+     "t": "持久化",
+     "c": [
+      {
+       "t": "thread_id",
+       "c": [],
+       "t_en": "thread_id"
+      },
+      {
+       "t": "InMemory / Sqlite / Postgres Saver",
+       "c": [],
+       "t_en": "InMemory / Sqlite / Postgres Saver"
+      },
+      {
+       "t": "get_state().next",
+       "c": [],
+       "t_en": "get_state().next"
+      },
+      {
+       "t": "invoke(None) 续跑",
+       "c": [],
+       "t_en": "invoke(None) resumes"
+      }
+     ],
+     "t_en": "Persistence"
+    },
+    {
+     "t": "人在回路",
+     "c": [
+      {
+       "t": "interrupt()",
+       "c": [],
+       "t_en": "interrupt()"
+      },
+      {
+       "t": "Command(resume=...)",
+       "c": [],
+       "t_en": "Command(resume=...)"
+      },
+      {
+       "t": "update_state(as_node=...)",
+       "c": [],
+       "t_en": "update_state(as_node=...)"
+      }
+     ],
+     "t_en": "Human in the loop"
+    },
+    {
+     "t": "控制",
+     "c": [
+      {
+       "t": "Command(goto=...)",
+       "c": [],
+       "t_en": "Command(goto=...)"
+      },
+      {
+       "t": "recursion_limit",
+       "c": [],
+       "t_en": "recursion_limit"
+      },
+      {
+       "t": "max_concurrency",
+       "c": [],
+       "t_en": "max_concurrency"
+      }
+     ],
+     "t_en": "Control"
+    },
+    {
+     "t": "stream",
+     "c": [
+      {
+       "t": "updates → SSE",
+       "c": [],
+       "t_en": "updates → SSE"
+      },
+      {
+       "t": "values",
+       "c": [],
+       "t_en": "values"
+      },
+      {
+       "t": "messages",
+       "c": [],
+       "t_en": "messages"
+      }
+     ],
+     "t_en": "stream"
+    }
+   ],
+   "t_en": "LangGraph"
+  },
+  "title_en": "LangGraph syntax"
+ },
+ {
+  "id": "rag",
+  "title": "RAG 全流程",
+  "group": "专题",
+  "root": {
+   "t": "RAG",
+   "c": [
+    {
+     "t": "离线",
+     "c": [
+      {
+       "t": "解析 PDF + 章节元数据",
+       "c": [],
+       "t_en": "Parse PDF + chapter metadata"
+      },
+      {
+       "t": "切块 1000/150",
+       "c": [],
+       "t_en": "Chunk 1000/150"
+      },
+      {
+       "t": "向量化 bge-m3",
+       "c": [],
+       "t_en": "Embed with bge-m3"
+      },
+      {
+       "t": "HNSW + GIN 索引",
+       "c": [],
+       "t_en": "HNSW + GIN indexes"
+      },
+      {
+       "t": "增量与幂等",
+       "c": [],
+       "t_en": "Incremental and idempotent"
+      }
+     ],
+     "t_en": "Offline"
+    },
+    {
+     "t": "在线",
+     "c": [
+      {
+       "t": "查询改写 / 多查询",
+       "c": [],
+       "t_en": "Query rewriting / multi-query"
+      },
+      {
+       "t": "向量 + BM25",
+       "c": [],
+       "t_en": "Vector + BM25"
+      },
+      {
+       "t": "RRF 融合",
+       "c": [],
+       "t_en": "RRF fusion"
+      },
+      {
+       "t": "LLM 重排",
+       "c": [],
+       "t_en": "LLM rerank"
+      },
+      {
+       "t": "预算拼接",
+       "c": [],
+       "t_en": "Budgeted packing"
+      },
+      {
+       "t": "带引用生成",
+       "c": [],
+       "t_en": "Generate with citations"
+      }
+     ],
+     "t_en": "Online"
+    },
+    {
+     "t": "结合 Agent",
+     "c": [
+      {
+       "t": "两步式",
+       "c": [],
+       "t_en": "Two-step"
+      },
+      {
+       "t": "检索即工具（强制 tool_choice）",
+       "c": [],
+       "t_en": "Retrieval as a tool (forced tool_choice)"
+      },
+      {
+       "t": "Corrective：充分性判断 + 子查询",
+       "c": [],
+       "t_en": "Corrective: sufficiency check + sub-queries"
+      }
+     ],
+     "t_en": "With agents"
+    },
+    {
+     "t": "评测",
+     "c": [
+      {
+       "t": "检索：Hit@5 / MRR",
+       "c": [],
+       "t_en": "Retrieval: Hit@5 / MRR"
+      },
+      {
+       "t": "生成：忠实 / 完整 / 拒答",
+       "c": [],
+       "t_en": "Generation: faithful / complete / refusals"
+      },
+      {
+       "t": "忠实 ≠ 完整",
+       "c": [],
+       "t_en": "Faithful ≠ complete"
+      }
+     ],
+     "t_en": "Evaluation"
+    },
+    {
+     "t": "坑",
+     "c": [
+      {
+       "t": "ts_rank_cd 无 IDF",
+       "c": [],
+       "t_en": "ts_rank_cd has no IDF"
+      },
+      {
+       "t": "中文查询 BM25 落空",
+       "c": [],
+       "t_en": "BM25 misses on Chinese queries"
+      },
+      {
+       "t": "docs[-8:] 丢定义",
+       "c": [],
+       "t_en": "docs[-8:] dropped the definition"
+      }
+     ],
+     "t_en": "Pitfalls"
+    }
+   ],
+   "t_en": "RAG"
+  },
+  "title_en": "RAG end to end"
+ },
+ {
+  "id": "context-memory",
+  "title": "记忆与上下文",
+  "group": "专题",
+  "root": {
+   "t": "记忆与上下文",
+   "c": [
+    {
+     "t": "记忆类型",
+     "c": [
+      {
+       "t": "工作记忆",
+       "c": [],
+       "t_en": "Working memory"
+      },
+      {
+       "t": "短期：线程历史",
+       "c": [],
+       "t_en": "Short-term: thread history"
+      },
+      {
+       "t": "长期：语义 / 情景 / 程序",
+       "c": [],
+       "t_en": "Long-term: semantic / episodic / procedural"
+      }
+     ],
+     "t_en": "Memory types"
+    },
+    {
+     "t": "写入",
+     "c": [
+      {
+       "t": "ADD / UPDATE / DELETE / NOOP",
+       "c": [],
+       "t_en": "ADD / UPDATE / DELETE / NOOP"
+      },
+      {
+       "t": "补丁合并",
+       "c": [],
+       "t_en": "Patch and merge"
+      },
+      {
+       "t": "target_id 校验",
+       "c": [],
+       "t_en": "Validate target_id"
+      }
+     ],
+     "t_en": "Writing"
+    },
+    {
+     "t": "读取",
+     "c": [
+      {
+       "t": "0.7 相似 + 0.2 新近 + 0.1 重要",
+       "c": [],
+       "t_en": "0.7 similarity + 0.2 recency + 0.1 importance"
+      },
+      {
+       "t": "阈值 0.4",
+       "c": [],
+       "t_en": "Threshold 0.4"
+      }
+     ],
+     "t_en": "Reading"
+    },
+    {
+     "t": "上下文问题",
+     "c": [
+      {
+       "t": "Context rot",
+       "c": [],
+       "t_en": "Context rot"
+      },
+      {
+       "t": "工具结果占 84%",
+       "c": [],
+       "t_en": "Tool results are 84%"
+      }
+     ],
+     "t_en": "Context problems"
+    },
+    {
+     "t": "压缩策略",
+     "c": [
+      {
+       "t": "截断：会忘事",
+       "c": [],
+       "t_en": "Truncate: forgets things"
+      },
+      {
+       "t": "清理工具结果：省 45%",
+       "c": [],
+       "t_en": "Clear tool results: saves 45%"
+      },
+      {
+       "t": "摘要：多调用",
+       "c": [],
+       "t_en": "Summarize: extra calls"
+      }
+     ],
+     "t_en": "Compression"
+    },
+    {
+     "t": "缓存",
+     "c": [
+      {
+       "t": "稳定前缀在前",
+       "c": [],
+       "t_en": "Stable prefix first"
+      },
+      {
+       "t": "时间戳放末尾 61%",
+       "c": [],
+       "t_en": "Timestamp at the end: 61%"
+      }
+     ],
+     "t_en": "Caching"
+    },
+    {
+     "t": "长任务",
+     "c": [
+      {
+       "t": "JIT 文件工具",
+       "c": [],
+       "t_en": "JIT file tools"
+      },
+      {
+       "t": "子 Agent 隔离",
+       "c": [],
+       "t_en": "Sub-agent isolation"
+      },
+      {
+       "t": "结构化笔记 + 锁",
+       "c": [],
+       "t_en": "Structured notes + lock"
+      }
+     ],
+     "t_en": "Long tasks"
+    }
+   ],
+   "t_en": "Memory and context"
+  },
+  "title_en": "Memory and context"
+ },
+ {
+  "id": "multiagent",
+  "title": "多 Agent 编排",
+  "group": "专题",
+  "root": {
+   "t": "多 Agent",
+   "c": [
+    {
+     "t": "何时拆",
+     "c": [
+      {
+       "t": "上下文隔离",
+       "c": [],
+       "t_en": "Context isolation"
+      },
+      {
+       "t": "宽度并行",
+       "c": [],
+       "t_en": "Breadth-wise parallelism"
+      },
+      {
+       "t": "角色 / 模型 / 权限",
+       "c": [],
+       "t_en": "Roles / models / permissions"
+      },
+      {
+       "t": "独立审核",
+       "c": [],
+       "t_en": "Independent review"
+      }
+     ],
+     "t_en": "When to split"
+    },
+    {
+     "t": "代价",
+     "c": [
+      {
+       "t": "token 约 15 倍",
+       "c": [],
+       "t_en": "About 15× tokens"
+      },
+      {
+       "t": "错误累积",
+       "c": [],
+       "t_en": "Compounding errors"
+      },
+      {
+       "t": "协调成本",
+       "c": [],
+       "t_en": "Coordination cost"
+      }
+     ],
+     "t_en": "Costs"
+    },
+    {
+     "t": "拓扑",
+     "c": [
+      {
+       "t": "Sequential：交接校验",
+       "c": [],
+       "t_en": "Sequential: hand-off validation"
+      },
+      {
+       "t": "Concurrent：分支内隔离失败",
+       "c": [],
+       "t_en": "Concurrent: isolate failures in branches"
+      },
+      {
+       "t": "Hybrid：依赖图",
+       "c": [],
+       "t_en": "Hybrid: dependency graph"
+      },
+      {
+       "t": "Supervisor：慢 2 倍",
+       "c": [],
+       "t_en": "Supervisor: 2× slower"
+      },
+      {
+       "t": "Orchestrator-workers：最省 token",
+       "c": [],
+       "t_en": "Orchestrator-workers: fewest tokens"
+      },
+      {
+       "t": "Handoff / Group chat / Magentic",
+       "c": [],
+       "t_en": "Handoff / Group chat / Magentic"
+      }
+     ],
+     "t_en": "Topologies"
+    },
+    {
+     "t": "通信",
+     "c": [
+      {
+       "t": "共享状态",
+       "c": [],
+       "t_en": "Shared state"
+      },
+      {
+       "t": "结构化契约",
+       "c": [],
+       "t_en": "Structured contracts"
+      },
+      {
+       "t": "字段归属",
+       "c": [],
+       "t_en": "Field ownership"
+      },
+      {
+       "t": "带足上下文",
+       "c": [],
+       "t_en": "Enough context"
+      }
+     ],
+     "t_en": "Communication"
+    },
+    {
+     "t": "失败模式（MAST）",
+     "c": [
+      {
+       "t": "规格矛盾",
+       "c": [],
+       "t_en": "Contradictory specs"
+      },
+      {
+       "t": "Agent 间失配",
+       "c": [],
+       "t_en": "Inter-agent misalignment"
+      },
+      {
+       "t": "验证与终止",
+       "c": [],
+       "t_en": "Verification and termination"
+      }
+     ],
+     "t_en": "Failure modes (MAST)"
+    }
+   ],
+   "t_en": "Multi-agent"
+  },
+  "title_en": "Multi-agent orchestration"
+ },
+ {
+  "id": "evaluation",
+  "title": "评测体系",
+  "group": "专题",
+  "root": {
+   "t": "评测",
+   "c": [
+    {
+     "t": "分层",
+     "c": [
+      {
+       "t": "组件",
+       "c": [],
+       "t_en": "Component"
+      },
+      {
+       "t": "过程",
+       "c": [],
+       "t_en": "Process"
+      },
+      {
+       "t": "结果",
+       "c": [],
+       "t_en": "Outcome"
+      },
+      {
+       "t": "系统",
+       "c": [],
+       "t_en": "System"
+      }
+     ],
+     "t_en": "Layers"
+    },
+    {
+     "t": "工具调用",
+     "c": [
+      {
+       "t": "AST 匹配",
+       "c": [],
+       "t_en": "AST matching"
+      },
+      {
+       "t": "饱和 → 难题集",
+       "c": [],
+       "t_en": "Saturated → hard set"
+      },
+      {
+       "t": "工具描述消融",
+       "c": [],
+       "t_en": "Tool-description ablation"
+      }
+     ],
+     "t_en": "Tool calls"
+    },
+    {
+     "t": "稳定性",
+     "c": [
+      {
+       "t": "pass@k",
+       "c": [],
+       "t_en": "pass@k"
+      },
+      {
+       "t": "pass^k",
+       "c": [],
+       "t_en": "pass^k"
+      },
+      {
+       "t": "小样本噪声",
+       "c": [],
+       "t_en": "Small-sample noise"
+      }
+     ],
+     "t_en": "Stability"
+    },
+    {
+     "t": "LLM 评委",
+     "c": [
+      {
+       "t": "参考答案 + 评分标准",
+       "c": [],
+       "t_en": "Reference + rubric"
+      },
+      {
+       "t": "交换位置",
+       "c": [],
+       "t_en": "Swap positions"
+      },
+      {
+       "t": "证据对等",
+       "c": [],
+       "t_en": "Evidence parity"
+      },
+      {
+       "t": "人工校准",
+       "c": [],
+       "t_en": "Human calibration"
+      }
+     ],
+     "t_en": "LLM judges"
+    },
+    {
+     "t": "落地",
+     "c": [
+      {
+       "t": "pytest 门禁",
+       "c": [],
+       "t_en": "pytest gate"
+      },
+      {
+       "t": "线上 trace → 回归样本",
+       "c": [],
+       "t_en": "Production traces → regression cases"
+      },
+      {
+       "t": "抽样评审",
+       "c": [],
+       "t_en": "Sampled reviews"
+      }
+     ],
+     "t_en": "In practice"
+    }
+   ],
+   "t_en": "Evaluation"
+  },
+  "title_en": "Evaluation"
+ },
+ {
+  "id": "production",
+  "title": "生产与安全",
+  "group": "专题",
+  "root": {
+   "t": "生产化",
+   "c": [
+    {
+     "t": "可靠性",
+     "c": [
+      {
+       "t": "checkpoint",
+       "c": [],
+       "t_en": "checkpoint"
+      },
+      {
+       "t": "幂等键",
+       "c": [],
+       "t_en": "Idempotency keys"
+      },
+      {
+       "t": "超时 / 取消 / 重试",
+       "c": [],
+       "t_en": "Timeout / cancel / retry"
+      },
+      {
+       "t": "降级链",
+       "c": [],
+       "t_en": "Fallback chain"
+      }
+     ],
+     "t_en": "Reliability"
+    },
+    {
+     "t": "人在回路",
+     "c": [
+      {
+       "t": "参数确认",
+       "c": [],
+       "t_en": "Confirm parameters"
+      },
+      {
+       "t": "交付前审批",
+       "c": [],
+       "t_en": "Approve before delivery"
+      }
+     ],
+     "t_en": "Human in the loop"
+    },
+    {
+     "t": "安全",
+     "c": [
+      {
+       "t": "提示注入",
+       "c": [],
+       "t_en": "Prompt injection"
+      },
+      {
+       "t": "致命三要素",
+       "c": [],
+       "t_en": "Lethal trifecta"
+      },
+      {
+       "t": "沙箱",
+       "c": [],
+       "t_en": "Sandboxing"
+      },
+      {
+       "t": "审计",
+       "c": [],
+       "t_en": "Auditing"
+      }
+     ],
+     "t_en": "Security"
+    },
+    {
+     "t": "性能",
+     "c": [
+      {
+       "t": "逐节点计时",
+       "c": [],
+       "t_en": "Time every node"
+      },
+      {
+       "t": "并行",
+       "c": [],
+       "t_en": "Parallelism"
+      },
+      {
+       "t": "模型分层",
+       "c": [],
+       "t_en": "Model tiering"
+      },
+      {
+       "t": "缓存",
+       "c": [],
+       "t_en": "Caching"
+      }
+     ],
+     "t_en": "Performance"
+    },
+    {
+     "t": "成本",
+     "c": [
+      {
+       "t": "清理上下文",
+       "c": [],
+       "t_en": "Clean up context"
+      },
+      {
+       "t": "小模型优先",
+       "c": [],
+       "t_en": "Small models first"
+      },
+      {
+       "t": "减少 Agent 步数",
+       "c": [],
+       "t_en": "Fewer agent steps"
+      }
+     ],
+     "t_en": "Cost"
+    }
+   ],
+   "t_en": "Production"
+  },
+  "title_en": "Production and safety"
+ }
+]

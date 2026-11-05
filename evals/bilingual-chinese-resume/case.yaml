@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: bilingual-chinese-resume
+expected_outcome: |
+  A bilingual (Chinese + English) interview kit for a Chinese résumé with one internship and one project:
+  scripts.md has an intro unit and two project units, each with both a "### 中文" and a "### English" block
+  using the template headings; Chinese 30-second sections are about 100–130 characters and 1-minute sections
+  about 230–280; claims without evidence ("日均调用 2 万次", "72% → 89%") are kept with their measurement caveats
+  or open questions rather than embellished; the app is built with the agent-engineer pack.
+context:
+  scaffold_script: place-files.sh
